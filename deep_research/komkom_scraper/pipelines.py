@@ -1,6 +1,7 @@
 import re
 import hashlib
 from datetime import datetime
+import scrapy
 from sqlalchemy.exc import IntegrityError
 from deep_research.db.database import get_session, get_engine
 from deep_research.db.models import Opportunity
