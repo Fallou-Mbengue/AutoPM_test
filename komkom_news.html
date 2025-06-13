@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Komkom News Mockup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      /* Custom styles for range input (audio player) */
+      input[type="range"].audio-progress {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 4px;
+        background: rgba(255,255,255,0.4);
+        border-radius: 2px;
+        outline: none;
+        transition: background 0.2s;
+      }
+      input[type="range"].audio-progress::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #F59E42;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        cursor: pointer;
+        margin-top: -7px;
+      }
+      input[type="range"].audio-progress::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #F59E42;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        cursor: pointer;
+      }
+      input[type="range"].audio-progress::-ms-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #F59E42;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+        cursor: pointer;
+      }
+      input[type="range"].audio-progress:focus {
+        outline: none;
+      }
+      input[type="range"].audio-progress::-webkit-slider-runnable-track {
+        height: 4px;
+        background: #fff;
+        border-radius: 2px;
+      }
+      input[type="range"].audio-progress::-ms-fill-lower {
+        background: #fff;
+      }
+      input[type="range"].audio-progress::-ms-fill-upper {
+        background: #fff;
+      }
+      input[type="range"].audio-progress::-moz-range-track {
+        height: 4px;
+        background: #fff;
+        border-radius: 2px;
+      }
+      input[type="range"].audio-progress::-ms-tooltip {
+        display: none;
+      }
+      /* Hide number input arrows */
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Desktop centering */
+      @media (min-width: 430px) {
+        .komkom-container {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-neutral-50 min-h-screen flex flex-col justify-between">
+    <main class="flex flex-col flex-1 items-center pt-4 pb-24">
+      <div class="komkom-container w-full max-w-[420px] px-2">
+        <!-- Header -->
+        <header class="flex items-center justify-between py-2 px-1">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <span class="font-bold text-lg text-[#004E98]" aria-label="Wekomkom logo">Wekomkom</span>
+          </div>
+          <!-- Language Selector -->
+          <button aria-label="Choisir la langue" class="flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-100 shadow hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <!-- Globe Icon -->
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 9c3.866 0 7-4.03 7-9s-3.134-9-7-9-7 4.03-7 9 3.134 9 7 9z"/>
+            </svg>
+            <span class="text-sm font-medium text-gray-800">Wolof</span>
+            <!-- Chevron Down -->
+            <svg aria-hidden="true" class="w-4 h-4 text-gray-700 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <!-- Avatar + Notification -->
+          <div class="relative flex items-center">
+            <button aria-label="Profil utilisateur" class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400">
+              <span class="text-gray-500 font-bold text-lg select-none">A</span>
+            </button>
+            <!-- Notification dot -->
+            <span class="absolute right-1 top-1 block w-2 h-2 rounded-full bg-red-500 border-2 border-white"></span>
+          </div>
+        </header>
+
+        <!-- Main Card -->
+        <section class="mt-3 bg-gradient-to-b from-[#004E98] to-[#19A44C] rounded-xl shadow-lg p-4 flex flex-col gap-3">
+          <!-- Title + Free pill -->
+          <div class="flex items-center justify-between">
+            <h1 class="text-white text-xl font-bold tracking-tight" aria-label="komkom News">komkom News</h1>
+            <span class="border border-white text-white text-xs px-2 py-0.5 rounded-full font-semibold">Free</span>
+          </div>
+          <!-- Date Selector pill -->
+          <div class="flex items-center justify-between bg-white/10 border border-white/20 rounded-full px-3 py-1">
+            <div class="flex items-center gap-1">
+              <!-- Calendar Icon -->
+              <svg aria-hidden="true" class="w-4 h-4 text-white mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path stroke-linecap="round" stroke-width="1.5" d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+              <span class="text-white text-sm font-medium">26 May 2025</span>
+            </div>
+            <button aria-label="Changer la date" class="w-7 h-7 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-lg transition">
+              <svg aria-hidden="true" class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+          </div>
+          <!-- Label tag pill -->
+          <div class="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/20 w-fit text-white text-xs font-medium">
+            Edition Hebdomadaire
+          </div>
+          <!-- Headline H2 -->
+          <h2 class="text-white text-lg font-bold leading-snug">
+            Opportunités d'affaire dans le secteur social, technologie, innovation
+          </h2>
+          <!-- Locked Analysis Box -->
+          <div class="relative rounded-md bg-black/30 flex flex-col items-center justify-center p-4 mt-1 overflow-hidden">
+            <div class="absolute inset-0 bg-black/50 rounded-md"></div>
+            <div class="relative flex flex-col items-center">
+              <!-- Lock Icon -->
+              <svg aria-hidden="true" class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="6" y="11" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M12 17v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 11V8a4 4 0 118 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span class="text-white text-sm font-semibold mb-2">Analyses exclusives disponibles</span>
+              <button aria-label="Essayer premium" class="px-4 py-1.5 rounded-full font-bold text-white shadow bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-400 hover:to-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm">
+                Essayer premium
+              </button>
+            </div>
+          </div>
+          <!-- Audio Player Box -->
+          <div class="relative rounded-md bg-white/10 flex flex-col items-center px-3 py-2 mt-1">
+            <!-- Progress bar & times -->
+            <div class="flex items-center w-full gap-2">
+              <span class="text-xs text-white font-mono">00:00</span>
+              <input
+                type="range"
+                min="0"
+                max="115"
+                value="0"
+                class="audio-progress flex-1 accent-orange-400"
+                aria-label="Barre de progression audio"
+              />
+              <span class="text-xs text-white font-mono">01:55</span>
+            </div>
+            <!-- Audio controls -->
+            <div class="flex items-center justify-center gap-8 mt-1 w-full">
+              <!-- Back 10 -->
+              <button aria-label="Reculer de 10 secondes" class="p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <svg aria-hidden="true" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M12 5V3m0 0C6.477 3 2 7.477 2 13s4.477 10 10 10 10-4.477 10-10c0-2.64-1.033-5.048-2.732-6.867M12 3v7m0 0l-3-3m3 3l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <text x="7" y="21" font-size="4" fill="white">10</text>
+                </svg>
+              </button>
+              <!-- Play -->
+              <button aria-label="Lecture" class="p-2 rounded-full bg-white/20 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <svg aria-hidden="true" class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <polygon points="6,4 20,12 6,20" />
+                </svg>
+              </button>
+              <!-- Forward 10 -->
+              <button aria-label="Avancer de 10 secondes" class="p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <svg aria-hidden="true" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M12 5V3m0 0c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-2.64 1.033-5.048 2.732-6.867M12 3v7m0 0l3-3m-3 3l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="scale(-1,1) translate(-24,0)"/>
+                  <text x="11" y="21" font-size="4" fill="white">10</text>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <!-- Bottom actions -->
+          <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center gap-1">
+              <!-- Speaker/avatar thumb -->
+              <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center border border-white shadow mr-2" aria-label="Avatar intervenant">
+                <span class="text-[#19A44C] font-bold">S</span>
+              </div>
+              <!-- Heart -->
+              <button aria-label="J'aime" class="flex items-center gap-1 text-white px-1 py-0.5 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400">
+                <svg aria-hidden="true" class="w-5 h-5 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09C13.09 4.01 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="text-xs font-medium">121</span>
+              </button>
+              <!-- Comment -->
+              <button aria-label="Commenter" class="flex items-center gap-1 text-white px-1 py-0.5 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <svg aria-hidden="true" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.5 8.5 0 018.5 8.5z"/>
+                </svg>
+                <span class="text-xs font-medium">12</span>
+              </button>
+              <!-- Share -->
+              <button aria-label="Partager" class="flex items-center gap-1 text-white px-1 py-0.5 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-green-400">
+                <svg aria-hidden="true" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/>
+                  <path d="M16 6l-4-4-4 4"/>
+                  <path d="M12 2v14"/>
+                </svg>
+                <span class="text-xs font-medium">1</span>
+              </button>
+              <!-- Bookmark -->
+              <button aria-label="Mettre en favoris" class="flex items-center gap-1 text-white px-1 py-0.5 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M5 3a2 2 0 00-2 2v16l9-4 9 4V5a2 2 0 00-2-2H5z"/>
+                </svg>
+                <span class="text-xs font-medium">12</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- Bottom Nav Bar -->
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-neutral-200 z-30">
+      <div class="komkom-container mx-auto max-w-[420px] flex justify-center py-2 gap-2">
+        <!-- Pour moi (active) -->
+        <button aria-label="Pour moi" class="flex items-center px-6 py-2 rounded-full bg-[#0060FF] text-white font-bold gap-2 shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <!-- Star Icon -->
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.943a1 1 0 00.95.69h4.146c.969 0 1.371 1.24.588 1.81l-3.36 2.44a1 1 0 00-.364 1.118l1.287 3.943c.3.921-.755 1.688-1.54 1.118l-3.36-2.44a1 1 0 00-1.176 0l-3.36 2.44c-.784.57-1.838-.197-1.539-1.118l1.287-3.943a1 1 0 00-.364-1.118l-3.36-2.44c-.783-.57-.38-1.81.588-1.81h4.146a1 1 0 00.95-.69l1.286-3.943z"/>
+          </svg>
+          <span>Pour moi</span>
+        </button>
+        <!-- Explorer -->
+        <button aria-label="Explorer" class="flex items-center px-6 py-2 rounded-full bg-neutral-100 text-gray-800 font-bold gap-2 shadow transition hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <!-- Globe Icon -->
+          <svg aria-hidden="true" class="w-5 h-5 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="1.5"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke-width="1.5"/>
+          </svg>
+          <span>Explorer</span>
+        </button>
+      </div>
+    </nav>
+  </body>
+</html>

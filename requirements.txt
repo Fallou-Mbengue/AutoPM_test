@@ -1,0 +1,13 @@
+scrapy
+sqlalchemy
+psycopg2-binary
+python-dotenv
+beautifulsoup4
+pytest
+gTTS
+pydub
+TTS[all]
+torch
+jinja2
+ffmpeg-python
+boto3
