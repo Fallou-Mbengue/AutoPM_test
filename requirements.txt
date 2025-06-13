@@ -11,3 +11,5 @@ torch
 jinja2
 ffmpeg-python
 boto3
+fastapi
+uvicorn
