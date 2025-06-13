@@ -1,5 +1,21 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Date, Text, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Date, Text
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class Opportunity(Base):
+    __tablename__ = 'opportunities'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    description = Column(Text)
+    deadline = Column(Date)
+    publication_date = Column(Date)
+    opportunity_type = Column(String)
+    eligibility = Column(Text)
+    link = Column(String)
+    source = Column(String), UniqueConstraint
 
 Base = declarative_base()
 

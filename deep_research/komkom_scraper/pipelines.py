@@ -5,18 +5,27 @@ import scrapy
 from sqlalchemy.exc import IntegrityError
 from deep_research.db.database import get_session, get_engine
 from deep_research.db.models import Opportunity
-from bs4 import BeautifulSoup
+from deep_research.komkom_scraper.items import OpportunityItem
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from datetime import datetime
+
+def parse_date(date_str):
+    # Implement parsing logic for various date formats
+    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"):
+        try:
+            return datetime.strptime(date_str.strip(), fmt).date()
+        except Exception:
+            continue
+    return None
 
 class NormalizationPipeline:
     def process_item(self, item, spider):
-        item['title'] = self.clean_text(item.get('title'))
-        item['description'] = self.clean_text(item.get('description'))
-        item['deadline'] = self.parse_date(item.get('deadline'))
-        item['amount'] = self.clean_text(item.get('amount'))
-        item['eligibility'] = self.clean_text(item.get('eligibility'))
-        item['sector'] = self.clean_text(item.get('sector'))
-        item['opportunity_type'] = self.clean_text(item.get('opportunity_type'))
-        item['fingerprint'] = self.fingerprint_item(item)
+        if isinstance(item, OpportunityItem):
+            if "deadline" in item and item["deadline"]:
+                item["deadline"] = parse_date(item["deadline"])
+            if "publication_date" in item and item["publication_date"]:
+                item["publication_date"] = parse_date(item["publication_date"])
         return item
 
     @staticmethod
