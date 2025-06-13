@@ -6,26 +6,33 @@ from sqlalchemy.exc import IntegrityError
 from deep_research.db.database import get_session, get_engine
 from deep_research.db.models import Opportunity
 from deep_research.komkom_scraper.items import OpportunityItem
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from datetime import datetime
 
-def parse_date(date_str):
-    # Implement parsing logic for various date formats
-    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"):
-        try:
-            return datetime.strptime(date_str.strip(), fmt).date()
-        except Exception:
-            continue
-    return None
+from bs4 import BeautifulSoup  # Added missing import
 
 class NormalizationPipeline:
     def process_item(self, item, spider):
+        # Only process OpportunityItem
         if isinstance(item, OpportunityItem):
+            # Parse and normalize deadline
             if "deadline" in item and item["deadline"]:
-                item["deadline"] = parse_date(item["deadline"])
+                item["deadline"] = self.parse_date(item["deadline"])
+            else:
+                item["deadline"] = None
+            # Parse and normalize publication_date
             if "publication_date" in item and item["publication_date"]:
-                item["publication_date"] = parse_date(item["publication_date"])
+                item["publication_date"] = self.parse_date(item["publication_date"])
+            else:
+                item["publication_date"] = None
+            # Clean description and eligibility fields
+            if "description" in item and item["description"]:
+                item["description"] = self.clean_text(item["description"])
+            if "eligibility" in item and item["eligibility"]:
+                item["eligibility"] = self.clean_text(item["eligibility"])
+            # Ensure sector and amount are present (set to None if missing)
+            item["sector"] = item.get("sector", None)
+            item["amount"] = item.get("amount", None)
+            # Compute and attach fingerprint for deduplication
+            item["fingerprint"] = self.fingerprint_item(item)
         return item
 
     @staticmethod
@@ -48,7 +55,7 @@ class NormalizationPipeline:
                 return datetime.strptime(date_str.strip(), fmt).date()
             except Exception:
                 continue
-        # If timestamp
+        # If timestamp-like input
         try:
             ts = float(date_str)
             return datetime.fromtimestamp(ts).date()
@@ -89,8 +96,8 @@ class PostgresPipeline:
             deadline=item.get('deadline'),
             link=item.get('link'),
             opportunity_type=item.get('opportunity_type'),
-            sector=item.get('sector'),
-            amount=item.get('amount'),
+            sector=item.get('sector', None),
+            amount=item.get('amount', None),
             eligibility=item.get('eligibility'),
             source=item.get('source'),
             fingerprint=fingerprint
