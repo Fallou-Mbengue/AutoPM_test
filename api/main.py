@@ -13,6 +13,7 @@ from fastapi import FastAPI, Depends, HTTPException, status, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -38,6 +39,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- Optionally serve local static files for testing ---
+LOCAL_STATIC_DIR = os.getenv("LOCAL_STATIC_DIR")
+if LOCAL_STATIC_DIR:
+    # Mount at /static, directory must exist
+    app.mount(
+        "/static",
+        StaticFiles(directory=LOCAL_STATIC_DIR),
+        name="static"
+    )
 
 # --- Dependency: SQLAlchemy session ---
 def get_db():

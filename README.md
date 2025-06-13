@@ -43,6 +43,29 @@ pip install -r requirements.txt
 
 Tests are located in `tests/test_episode_builder.py` and use dummy TTS and S3 upload functions.
 
+#### Local End-to-End Testing (No AWS S3)
+
+To test locally without using real S3, you can use the `LOCAL_STATIC_DIR` environment variable.
+
+- **How it works:**  
+  When `LOCAL_STATIC_DIR` is set, episode audio and other uploaded files are copied into this directory instead of being uploaded to S3.  
+  The FastAPI app will automatically serve this directory at `/static`, so returned URLs will look like `http://127.0.0.1:8000/static/{key}`.
+
+- **Setup example:**
+  ```sh
+  export LOCAL_STATIC_DIR=./local_static
+  mkdir -p ./local_static
+  uvicorn api.main:app --reload
+  ```
+
+- **Notes:**
+  - Make sure `LOCAL_STATIC_DIR` exists and is writable.
+  - The S3 upload code is bypassed; production is not affected when `LOCAL_STATIC_DIR` is unset.
+  - Access generated episodes and files via URLs like `http://127.0.0.1:8000/static/{key}`.
+
+- **To revert to S3/CDN uploads:**  
+  Unset the `LOCAL_STATIC_DIR` variable (`unset LOCAL_STATIC_DIR` or close your shell).
+
 # Deployment
 
 ## FastAPI Backend Dockerization
