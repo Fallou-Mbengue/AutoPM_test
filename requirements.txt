@@ -8,3 +8,4 @@ gTTS
 pydub
 TTS[all]
 torch
+jinja2
