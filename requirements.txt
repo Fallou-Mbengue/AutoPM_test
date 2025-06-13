@@ -9,3 +9,5 @@ pydub
 TTS[all]
 torch
 jinja2
+ffmpeg-python
+boto3

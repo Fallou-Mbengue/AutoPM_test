@@ -1,30 +1,44 @@
-# AutoPM_test
-Test auto pm cosine 
+# Episode Builder
 
-## Text-to-Speech (TTS) Integration
+## Usage
 
-This project supports TTS for French and Wolof using Google gTTS and [Coqui TTS](https://github.com/coqui-ai/TTS) (XTTS v2 multilingual model).
+The Episode Builder constructs audio episodes from a list of opportunities/news items, generating both MP3 and HLS audio, optionally overlaying background music, and uploading the episode to S3/CDN.
 
-### Requirements
+### Example
 
-- Python 3.8+
-- [TTS (Coqui)](https://github.com/coqui-ai/TTS) with XTTS v2:  
-  Install dependencies from `requirements.txt`:
-  ```
-  pip install -r requirements.txt
-  ```
-  This will install `TTS[all]` and `torch`.
+```python
+from episode_builder.builder import build_episode
 
-### Wolof Model
-
-By default, the system uses the open-source multilingual model `tts_models/multilingual/xtts_v2` for Wolof voice synthesis.  
-To use a custom or community Wolof model (e.g., `galsenai/xtts_v2_wolof`), set the environment variable before running:
-
-```bash
-export WOLOF_MODEL="galsenai/xtts_v2_wolof"
+result = build_episode(
+    user_id=123,
+    lang="en",
+    opportunity_list=[{"id": 1, "title": "Sample news"}],
+    work_dir="/tmp/episode_build",
+    title="Today's News",
+    date="2024-01-01",
+    background_music_path="/path/to/music.mp3",  # Optional
+    DummyTTS=DummyTTS,  # Provide your TTS implementation
+)
+print(result["mp3_url"])
+print(result["hls_url"])
 ```
 
-### Usage
+### Environment
 
-- For French (`lang='fr'`), Google gTTS is used.
-- For Wolof (`lang='wo'`), Coqui TTS is used if available and properly installed. If not, the system falls back to French TTS with a warning. 
+- To use background music, set the `background_music_path` argument to a valid audio file path.
+- Requires ffmpeg installed and available on PATH for HLS segmenting.
+
+### Dependencies
+
+Install requirements with:
+
+```
+pip install -r requirements.txt
+```
+
+- `ffmpeg-python` and `boto3` are required for export and upload functionality.
+- Requires a database with the models defined in `db/models.py`.
+
+### Testing
+
+Tests are located in `tests/test_episode_builder.py` and use dummy TTS and S3 upload functions.
