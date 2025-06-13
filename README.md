@@ -42,3 +42,27 @@ pip install -r requirements.txt
 ### Testing
 
 Tests are located in `tests/test_episode_builder.py` and use dummy TTS and S3 upload functions.
+
+# Deployment
+
+## FastAPI Backend Dockerization
+
+A `Dockerfile` is available at the project root for containerizing the FastAPI backend.  
+**Build and run:**
+```sh
+docker build -t my-fastapi-app .
+docker run -p 8000:8000 my-fastapi-app
+```
+
+## AWS ECR Deployment
+
+A sample deployment script for AWS ECR is provided at `deploy/ecr_push.sh`.  
+Edit the placeholders with your AWS account, region, and repository information.
+
+## Frontend Static Deployment
+
+The frontend supports static deployment via Netlify.  
+A `netlify.toml` is provided in the `frontend/` directory:
+
+- **Build command:** `npm run build`
+- **Publish directory:** `build`
