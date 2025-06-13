@@ -6,3 +6,5 @@ beautifulsoup4
 pytest
 gTTS
 pydub
+TTS[all]
+torch

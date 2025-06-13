@@ -3,12 +3,19 @@ import uuid
 import logging
 
 from gtts import gTTS
-from .config import DEFAULT_OUTPUT_DIR, SUPPORTED_LANGS
+from .config import DEFAULT_OUTPUT_DIR, SUPPORTED_LANGS, WOLOF_MODEL
 
 class TTSGenerator:
     def __init__(self, output_dir=DEFAULT_OUTPUT_DIR):
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
+        self.wolof_tts = None
+        # Try to load Coqui TTS for Wolof only once
+        try:
+            from TTS.api import TTS
+            self.wolof_tts = TTS(WOLOF_MODEL)
+        except Exception as e:
+            logging.warning(f"Could not load Wolof TTS model ({WOLOF_MODEL}): {e}. Will fallback to gTTS for Wolof.")
 
     def synthesize(self, text, lang, output_dir=None, filename_prefix=None):
         """Synthesize speech from text and save to file.
@@ -37,14 +44,27 @@ class TTSGenerator:
             tts = gTTS(text=text, lang='fr')
             tts.save(file_path)
         elif lang == "wo":
-            # Wolof not supported by Google, fallback to French with a warning.
-            logging.warning(
-                "Wolof (wo) is not supported by gTTS. Using French as fallback. "
-                "TODO: Integrate real Wolof TTS model when available."
-            )
-            tts = gTTS(text=text, lang='fr')
-            tts.save(file_path)
-            # TODO: Integrate real Wolof TTS (e.g., using TTS library or custom model).
+            if self.wolof_tts is not None:
+                try:
+                    # XTTS v2 expects language code like 'wol'
+                    self.wolof_tts.tts_to_file(
+                        text=text,
+                        speaker_wav=None,
+                        language="wol",
+                        file_path=file_path
+                    )
+                except Exception as e:
+                    logging.warning(
+                        f"Failed to synthesize Wolof with Coqui TTS: {e}. Falling back to gTTS (fr)."
+                    )
+                    tts = gTTS(text=text, lang='fr')
+                    tts.save(file_path)
+            else:
+                logging.warning(
+                    "Wolof (wo) TTS model not available. Falling back to gTTS (fr)."
+                )
+                tts = gTTS(text=text, lang='fr')
+                tts.save(file_path)
         else:
             raise ValueError(f"Unsupported language code: {lang}")
 
