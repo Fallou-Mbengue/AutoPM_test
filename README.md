@@ -66,6 +66,34 @@ To test locally without using real S3, you can use the `LOCAL_STATIC_DIR` enviro
 - **To revert to S3/CDN uploads:**  
   Unset the `LOCAL_STATIC_DIR` variable (`unset LOCAL_STATIC_DIR` or close your shell).
 
+---
+
+### Test the full local pipeline
+
+You can run a full local end-to-end test (DB setup, spider, episode builder) using the provided script:
+
+```sh
+bash scripts/run_local_e2e.sh
+```
+
+This will:
+- Ensure environment variables for DB and static directory are set (or will set defaults)
+- Create tables in the database
+- Run the opportunity spider (if `scrapy` is installed)
+- Build a demo episode for user 1 (lang=fr) using the latest scraped opportunities
+- Show the resulting MP3 path
+
+**For full local testing, in one terminal:**
+```sh
+bash scripts/run_local_e2e.sh
+```
+
+**And in another terminal, start the API and frontend:**
+```sh
+uvicorn api.main:app --reload
+npm start
+```
+
 # Deployment
 
 ## FastAPI Backend Dockerization
