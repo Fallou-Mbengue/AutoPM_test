@@ -1,8 +1,8 @@
 import scrapy
-from deep_research.komkom_scraper.items import OpportunityItem
+from komkom_scraper.items import OpportunityItem
 
 class AdepmESpider(scrapy.Spider):
-    name = 'adepme_opportunity'
+    name = 'adepme_spider'
     allowed_domains = ['adepme.sn']
     start_urls = ['https://www.adepme.sn/opportunites']
 

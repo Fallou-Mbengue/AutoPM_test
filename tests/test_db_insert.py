@@ -2,7 +2,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from deep_research.db.models import Base, Opportunity
-from deep_research.komkom_scraper.pipelines import PostgresPipeline
+from komkom_scraper.pipelines import PostgresPipeline
+from komkom_scraper.items import OpportunityItem
 
 @pytest.fixture(scope="function")
 def db_session():

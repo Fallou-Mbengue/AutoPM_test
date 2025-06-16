@@ -2,8 +2,8 @@ import os
 import pytest
 import scrapy
 from scrapy.http import HtmlResponse, Request
-from deep_research.komkom_scraper.spiders.adepme_spider import AdepmESpider
-from deep_research.komkom_scraper.items import OpportunityItem
+from komkom_scraper.spiders.adepme_spider import AdepmESpider
+from komkom_scraper.items import OpportunityItem
 
 LIST_PAGE = """
 <html>
