@@ -37,37 +37,40 @@ def main():
     os.makedirs(work_dir, exist_ok=True)
 
     # DB session
-    session = database.get_session()
-
-    # Fetch last 3 opportunities
-    ops = get_last_opportunities(session, limit=3)
-    if not ops:
-        print(json.dumps({"error": "No opportunities found in database."}))
-        sys.exit(1)
-
-    opportunity_list = [opportunity_to_dict(op) for op in ops]
-
-    # Try TTSGenerator, fallback to DummyTTS
+    SessionLocal = database.get_session()
+    session = SessionLocal()
     try:
-        tts = TTSGenerator(lang=lang)
-        # Optionally test with a dummy call to make sure it works
-        # tts.synthesize("test", "/tmp/test.mp3")
-    except Exception:
-        tts = DummyTTS(lang=lang)
+        # Fetch last 3 opportunities
+        ops = get_last_opportunities(session, limit=3)
+        if not ops:
+            print(json.dumps({"error": "No opportunities found in database."}))
+            sys.exit(1)
 
-    # Build episode
-    result = build_episode(
-        user_id=user_id,
-        lang=lang,
-        opportunity_list=opportunity_list,
-        work_dir=work_dir,
-        title=title,
-        date=date,
-        DummyTTS=tts,
-    )
+        opportunity_list = [opportunity_to_dict(op) for op in ops]
 
-    # Output result as JSON
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+        # Try TTSGenerator, fallback to DummyTTS
+        try:
+            tts = TTSGenerator(lang=lang)
+            # Optionally test with a dummy call to make sure it works
+            # tts.synthesize("test", "/tmp/test.mp3")
+        except Exception:
+            tts = DummyTTS(lang=lang)
+
+        # Build episode
+        result = build_episode(
+            user_id=user_id,
+            lang=lang,
+            opportunity_list=opportunity_list,
+            work_dir=work_dir,
+            title=title,
+            date=date,
+            DummyTTS=tts,
+        )
+
+        # Output result as JSON
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    finally:
+        session.close()
 
 if __name__ == "__main__":
     main()

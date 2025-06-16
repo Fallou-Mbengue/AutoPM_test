@@ -21,7 +21,8 @@ def build_episode(
     background_music_path=None,
     DummyTTS=None,
 ):
-    session = get_session()
+    SessionLocal = get_session()
+    session = SessionLocal()
     # Fetch opportunities (for now: pass-through for tests)
     opportunities = fetch_opportunities(user_id, opportunity_list=opportunity_list)
 
@@ -105,6 +106,7 @@ def build_episode(
         )
         session.add(item)
     session.commit()
+    session.close()
 
     return {
         "mp3_url": mp3_url,
