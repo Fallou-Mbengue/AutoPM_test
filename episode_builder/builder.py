@@ -1,4 +1,5 @@
 import os
+from .ffmpeg_check import ensure_ffmpeg  # <-- will raise clear error if ffmpeg missing
 from jinja2 import Environment, FileSystemLoader
 from pydub import AudioSegment, effects
 from datetime import datetime

@@ -2,6 +2,14 @@
 
 set -e
 
+# --- Check FFmpeg presence early (fail fast) ---
+if ! command -v ffmpeg >/dev/null 2>&1; then
+  echo "ERROR: FFmpeg is not installed or not on PATH."
+  echo "Please install FFmpeg before running this script."
+  echo "See install instructions in README.md (brew/apt/choco/download)."
+  exit 2
+fi
+
 # --- ENV VAR DEFAULTS ---
 : "${DB_HOST:=localhost}"
 : "${DB_PORT:=5432}"

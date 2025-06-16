@@ -26,7 +26,36 @@ print(result["hls_url"])
 ### Environment
 
 - To use background music, set the `background_music_path` argument to a valid audio file path.
-- Requires ffmpeg installed and available on PATH for HLS segmenting.
+
+#### FFmpeg system dependency (required)
+
+This project requires the [FFmpeg](https://ffmpeg.org/) command-line tool to be installed and available on your system PATH.  
+FFmpeg is used by `pydub` for exporting MP3 files and by the episode builder for audio processing.
+If FFmpeg is missing, you may see warnings like:
+
+```
+RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+```
+
+**Install FFmpeg:**
+
+- **macOS:**  
+  ```sh
+  brew install ffmpeg
+  ```
+- **Ubuntu/Debian:**  
+  ```sh
+  sudo apt-get update
+  sudo apt-get install -y ffmpeg
+  ```
+- **Windows:**  
+  - Install via [Chocolatey](https://chocolatey.org/packages/ffmpeg):  
+    ```
+    choco install ffmpeg
+    ```
+  - Or download from [FFmpeg official builds](https://ffmpeg.org/download.html#build-windows) and add the `bin/` folder to your `PATH`.
+
+If you run locally without FFmpeg, you will get a clear error with instructions.
 
 ### Dependencies
 
