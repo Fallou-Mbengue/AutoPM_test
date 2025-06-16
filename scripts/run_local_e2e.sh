@@ -17,6 +17,9 @@ echo "Using DB_PASSWORD=$DB_PASSWORD"
 echo "Using DB_NAME=$DB_NAME"
 echo "Using LOCAL_STATIC_DIR=$LOCAL_STATIC_DIR"
 
+# Ensure repo root is in Python path so Scrapy + pipelines can import deep_research.*
+export PYTHONPATH="$(pwd)${PYTHONPATH:+:$PYTHONPATH}"
+
 # --- STATIC DIR ---
 if [ ! -d "$LOCAL_STATIC_DIR" ]; then
   echo "Creating LOCAL_STATIC_DIR at $LOCAL_STATIC_DIR"
