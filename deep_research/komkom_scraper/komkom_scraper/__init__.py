@@ -1,1 +1,1 @@
-# Init file for komkom_scraper package
+# komkom_scraper package

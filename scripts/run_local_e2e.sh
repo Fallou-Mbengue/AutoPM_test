@@ -30,13 +30,18 @@ fi
 echo "Creating tables..."
 python deep_research/create_tables.py
 
-# --- RUN SPIDER (skip if scrapy not installed) ---
-if command -v scrapy &> /dev/null; then
-  echo "Running scrapy spider (adepme_opportunity)..."
-  (cd deep_research/komkom_scraper && scrapy crawl adepme_opportunity)
-else
-  echo "scrapy not installed, skipping spider run."
-fi
+# --- BUILD AND RUN SCRAPER DOCKER ---
+echo "Building komkom_scraper Docker image..."
+docker build -t komkom_scraper_test deep_research/komkom_scraper
+
+echo "Running komkom_scraper container..."
+docker run --rm \
+  -e DB_HOST="$DB_HOST" \
+  -e DB_PORT="$DB_PORT" \
+  -e DB_USER="$DB_USER" \
+  -e DB_PASSWORD="$DB_PASSWORD" \
+  -e DB_NAME="$DB_NAME" \
+  komkom_scraper_test scrapy crawl adepme_spider
 
 # --- BUILD EPISODE ---
 echo "Building episode for user 1 (lang=fr)..."

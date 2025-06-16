@@ -1,5 +1,5 @@
 import pytest
-from deep_research.komkom_scraper.pipelines import NormalizationPipeline
+from komkom_scraper.pipelines import NormalizationPipeline
 
 def test_clean_text_html():
     html = "<p>Hello <b>World</b>!</p>"
