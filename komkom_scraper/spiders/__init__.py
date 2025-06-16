@@ -1,0 +1,1 @@
+# This file makes komkom_scraper.spiders a Python package
