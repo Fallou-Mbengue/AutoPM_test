@@ -61,6 +61,10 @@ requirements.txt
    pytest
    ```
 
+> **Tip**: Always run `pytest` from the repository root (the folder containing `tests/`).  
+> If you happen to be inside `deep_research/komkom_scraper`, simply run `cd ../../..` first.  
+> Imports like `from komkom_scraper...` will resolve automatically via a lightweight stub package at the project root.
+
 ## Scheduling
 
 For now, use `cron` or any scheduler to run, e.g.:
