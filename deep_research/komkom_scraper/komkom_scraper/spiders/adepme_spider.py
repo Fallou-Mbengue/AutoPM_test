@@ -4,7 +4,7 @@ from komkom_scraper.items import OpportunityItem
 class AdepmESpider(scrapy.Spider):
     name = 'adepme_spider'
     allowed_domains = ['adepme.sn']
-    start_urls = ['https://www.adepme.sn/opportunites']
+    start_urls = ['https://adepme.sn/opportunites']
 
     def parse(self, response):
         # For each listing article, follow link to detail page
