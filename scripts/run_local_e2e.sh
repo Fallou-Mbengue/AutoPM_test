@@ -36,7 +36,7 @@ fi
 
 # --- CREATE TABLES ---
 echo "Creating tables..."
-python deep_research/create_tables.py
+python3 deep_research/create_tables.py
 
 # --- BUILD AND RUN SCRAPER DOCKER ---
 echo "Building komkom_scraper Docker image..."
@@ -53,7 +53,7 @@ docker run --rm \
 
 # --- BUILD EPISODE ---
 echo "Building episode for user 1 (lang=fr)..."
-EPISODE_OUT=$(python scripts/run_episode_builder.py)
+EPISODE_OUT=$(python3 scripts/run_episode_builder.py)
 SUCCESS=$?
 
 if [ $SUCCESS -ne 0 ]; then
@@ -61,5 +61,5 @@ if [ $SUCCESS -ne 0 ]; then
   exit 1
 fi
 
-MP3_PATH=$(echo "$EPISODE_OUT" | python -c "import sys, json; print(json.load(sys.stdin)['mp3_url'])")
+MP3_PATH=$(echo "$EPISODE_OUT" | python3 -c "import sys, json; print(json.load(sys.stdin)['mp3_url'])")
 echo "SUCCESS: Episode built. MP3: $MP3_PATH"
