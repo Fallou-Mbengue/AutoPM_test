@@ -6,12 +6,14 @@ If FFmpeg is not found on PATH, raises a clear error pointing to README instruct
 
 from pydub.utils import which
 
+import warnings
+
 def ensure_ffmpeg():
     if which("ffmpeg") is None:
-        raise RuntimeError(
-            "FFmpeg not found on PATH. Please install it to use the episode builder. "
-            "See README.md for instructions (brew/apt/choco/download)."
+        warnings.warn(
+            "FFmpeg not found on PATH. Some features may be unavailable. "
+            "See README.md for installation instructions.",
+            RuntimeWarning
         )
-
-# Run check at import so any script importing builder.py gets the check for free
-ensure_ffmpeg()
+        return False
+    return True

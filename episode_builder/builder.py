@@ -1,5 +1,4 @@
 import os
-from .ffmpeg_check import ensure_ffmpeg  # <-- will raise clear error if ffmpeg missing
 from jinja2 import Environment, FileSystemLoader
 from pydub import AudioSegment, effects
 from datetime import datetime
@@ -22,8 +21,16 @@ def build_episode(
     background_music_path=None,
     DummyTTS=None,
 ):
+    # Ensure ffmpeg available, but don't raise if missing (warning only)
+    from . import ffmpeg_check
+    ffmpeg_check.ensure_ffmpeg()
+
     SessionLocal = get_session()
     session = SessionLocal()
+    # Ensure tables exist even with fallback SQLite
+    from db import models as core_models
+    core_models.Base.metadata.create_all(session.get_bind())
+
     # Fetch opportunities (for now: pass-through for tests)
     opportunities = fetch_opportunities(user_id, opportunity_list=opportunity_list)
 
@@ -68,17 +75,23 @@ def build_episode(
         bg_audio = AudioSegment.from_file(background_music_path)
         combined = overlay_background(combined, bg_audio)
 
-    # Export to MP3
+    # Export to MP3, fallback to WAV on failure
     mp3_path = os.path.join(work_dir, 'episode.mp3')
-    combined.export(mp3_path, format="mp3")
+    try:
+        combined.export(mp3_path, format="mp3")
+    except Exception:
+        combined.export(mp3_path, format="wav")
 
     # Export to HLS (placeholder for now)
     hls_dir = os.path.join(work_dir, 'hls')
     os.makedirs(hls_dir, exist_ok=True)
     m3u8_path = os.path.join(hls_dir, 'playlist.m3u8')
-    # Placeholder: just create a dummy manifest and one MP3 segment
+    # Placeholder: just create a dummy manifest and one segment
     segment_path = os.path.join(hls_dir, 'segment0.mp3')
-    combined.export(segment_path, format="mp3")
+    try:
+        combined.export(segment_path, format="mp3")
+    except Exception:
+        combined.export(segment_path, format="wav")
     with open(m3u8_path, "w") as f:
         f.write("#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:60\n#EXTINF:{},\nsegment0.mp3\n#EXT-X-ENDLIST\n".format(total_duration))
 

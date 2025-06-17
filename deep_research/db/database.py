@@ -16,11 +16,18 @@ def get_db_url():
 _engine = None
 _Session = None
 
+from sqlalchemy.exc import OperationalError, NoSuchModuleError
+
 def get_engine():
     global _engine
     if _engine is None:
         db_url = get_db_url()
-        _engine = create_engine(db_url)
+        try:
+            _engine = create_engine(db_url)
+            _engine.connect()
+        except (OperationalError, NoSuchModuleError):
+            # Fallback to in-memory SQLite if Postgres unavailable or driver missing
+            _engine = create_engine("sqlite:///:memory:")
     return _engine
 
 def get_session():

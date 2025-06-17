@@ -9,6 +9,8 @@ class NormalizationPipeline:
     def clean_text(text):
         if not text:
             return None
+        # Strip HTML tags
+        text = re.sub(r"<[^>]+>", "", text)
         # Remove excessive whitespace
         text = re.sub(r'\s+', ' ', text)
         return text.strip()
@@ -17,8 +19,16 @@ class NormalizationPipeline:
     def parse_date(date_str):
         if not date_str:
             return None
-        # Try various date formats
-        for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%Y/%m/%d"):
+        # Try various date formats, including long-form English dates
+        date_formats = [
+            "%Y-%m-%d",
+            "%d/%m/%Y",
+            "%d-%m-%Y",
+            "%Y/%m/%d",
+            "%B %d, %Y",  # e.g. May 10, 2024
+            "%d %B %Y",   # e.g. 10 May 2024
+        ]
+        for fmt in date_formats:
             try:
                 return datetime.strptime(date_str.strip(), fmt).date()
             except Exception:
